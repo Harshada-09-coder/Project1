@@ -6,6 +6,8 @@ import org.kordamp.ikonli.swing.FontIcon;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CustomerDashboardPage extends JFrame {
 
@@ -82,12 +84,34 @@ public class CustomerDashboardPage extends JFrame {
         right.setOpaque(false);
 
         JLabel wishIcon = new JLabel(FontIcon.of(Feather.HEART, 16, UIUtils.COLOR_TEXT_MAIN));
+        wishIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        wishIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(CustomerDashboardPage.this, "Wishlist will be shown here.", "Wishlist", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         JLabel cartIcon = new JLabel(FontIcon.of(Feather.SHOPPING_BAG, 16, UIUtils.COLOR_TEXT_MAIN));
-        
+        cartIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cartIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new MyCartPage().setVisible(true);
+                CustomerDashboardPage.this.dispose();
+            }
+        });
+
         JButton btnAccount = new JButton("My Account", FontIcon.of(Feather.USER, 14, UIUtils.COLOR_TEXT_MAIN));
         btnAccount.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnAccount.setContentAreaFilled(false);
         btnAccount.setBorderPainted(false);
+        btnAccount.setFocusPainted(false);
+        btnAccount.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnAccount.addActionListener(e -> {
+            new MyAccountPage().setVisible(true);
+            CustomerDashboardPage.this.dispose();
+        });
 
         right.add(wishIcon);
         right.add(cartIcon);
@@ -113,23 +137,50 @@ public class CustomerDashboardPage extends JFrame {
 
         sidebar.add(catLbl);
         sidebar.add(Box.createVerticalStrut(10));
-        sidebar.add(createSidebarItem("All Products", Feather.GRID, true));
-        sidebar.add(createSidebarItem("Electronics", Feather.TV, false));
-        sidebar.add(createSidebarItem("Fashion", Feather.TAG, false));
-        sidebar.add(createSidebarItem("Home & Living", Feather.HOME, false));
-        sidebar.add(createSidebarItem("Beauty & Care", Feather.SUN, false));
-        sidebar.add(createSidebarItem("Books & Stationery", Feather.BOOK, false));
-        sidebar.add(createSidebarItem("Sports & Fitness", Feather.ACTIVITY, false));
+
+        JButton btnAllProducts = createSidebarItem("All Products", Feather.GRID, true);
+        btnAllProducts.addActionListener(e -> {
+            new ProductListingPage("All Categories").setVisible(true);
+            dispose();
+        });
+        sidebar.add(btnAllProducts);
+
+        sidebar.add(createCategorySidebarItem("Electronics", Feather.TV));
+        sidebar.add(createCategorySidebarItem("Fashion", Feather.TAG));
+        sidebar.add(createCategorySidebarItem("Home & Living", Feather.HOME));
+        sidebar.add(createCategorySidebarItem("Beauty & Care", Feather.SUN));
+        sidebar.add(createCategorySidebarItem("Books & Stationery", Feather.BOOK));
+        sidebar.add(createCategorySidebarItem("Sports & Fitness", Feather.ACTIVITY));
 
         sidebar.add(Box.createVerticalStrut(20));
+
         JLabel shopLbl = new JLabel("MY SHOPPING");
         shopLbl.setFont(new Font("Segoe UI", Font.BOLD, 10));
         shopLbl.setForeground(UIUtils.COLOR_TEXT_MUTED);
 
         sidebar.add(shopLbl);
         sidebar.add(Box.createVerticalStrut(10));
-        sidebar.add(createSidebarItem("My Cart (3)", Feather.SHOPPING_CART, false));
-        sidebar.add(createSidebarItem("My Orders", Feather.PACKAGE, false));
+
+        JButton btnCartSidebar = createSidebarItem("My Cart", Feather.SHOPPING_CART, false);
+        btnCartSidebar.addActionListener(e -> {
+            new MyCartPage().setVisible(true);
+            CustomerDashboardPage.this.dispose();
+        });
+        sidebar.add(btnCartSidebar);
+
+        JButton btnOrders = createSidebarItem("My Orders", Feather.PACKAGE, false);
+        btnOrders.addActionListener(e -> {
+            new MyOrdersPage().setVisible(true);
+            CustomerDashboardPage.this.dispose();
+        });
+        sidebar.add(btnOrders);
+
+        JButton btnMyAccount = createSidebarItem("My Account", Feather.USER, false);
+        btnMyAccount.addActionListener(e -> {
+            new MyAccountPage().setVisible(true);
+            CustomerDashboardPage.this.dispose();
+        });
+        sidebar.add(btnMyAccount);
 
         // Logout Action
         JButton btnLogout = createSidebarItem("Logout", Feather.LOG_OUT, false);
@@ -140,6 +191,15 @@ public class CustomerDashboardPage extends JFrame {
         sidebar.add(btnLogout);
 
         return sidebar;
+    }
+
+    private JButton createCategorySidebarItem(String catName, Feather icon) {
+        JButton btn = createSidebarItem(catName, icon, false);
+        btn.addActionListener(e -> {
+            new ProductListingPage(catName).setVisible(true);
+            CustomerDashboardPage.this.dispose();
+        });
+        return btn;
     }
 
     private JButton createSidebarItem(String title, Feather icon, boolean active) {
@@ -225,6 +285,10 @@ public class CustomerDashboardPage extends JFrame {
         btnExplore.setForeground(Color.WHITE);
         btnExplore.setBackground(UIUtils.COLOR_PRIMARY);
         btnExplore.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnExplore.addActionListener(e -> {
+            new ProductListingPage("All Categories").setVisible(true);
+            dispose();
+        });
 
         left.add(tag);
         left.add(Box.createVerticalStrut(4));
@@ -265,8 +329,8 @@ public class CustomerDashboardPage extends JFrame {
         row.add(createCategoryCard("Fashion", "3.4k+ items", Feather.TAG));
         row.add(createCategoryCard("Home & Living", "890+ items", Feather.HOME));
         row.add(createCategoryCard("Beauty & Care", "640+ items", Feather.SUN));
-        row.add(createCategoryCard("Books", "1.5k+ items", Feather.BOOK));
-        row.add(createCategoryCard("Sports", "420+ items", Feather.ACTIVITY));
+        row.add(createCategoryCard("Books & Stationery", "1.5k+ items", Feather.BOOK));
+        row.add(createCategoryCard("Sports & Fitness", "420+ items", Feather.ACTIVITY));
 
         return row;
     }
@@ -275,6 +339,15 @@ public class CustomerDashboardPage extends JFrame {
         UIUtils.RoundedPanel card = new UIUtils.RoundedPanel(12, Color.WHITE, UIUtils.COLOR_BORDER);
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBorder(new EmptyBorder(12, 10, 12, 10));
+        card.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        card.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new ProductListingPage(name).setVisible(true);
+                CustomerDashboardPage.this.dispose();
+            }
+        });
 
         JLabel ic = new JLabel(FontIcon.of(icon, 18, UIUtils.COLOR_PRIMARY_DARK));
         ic.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -344,6 +417,14 @@ public class CustomerDashboardPage extends JFrame {
         centerGraphic.setOpaque(false);
         centerGraphic.setLayout(new GridBagLayout());
         centerGraphic.add(new JLabel(FontIcon.of(icon, 36, UIUtils.COLOR_PRIMARY)));
+        centerGraphic.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        centerGraphic.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new ProductDetailsPage(title, "Electronics", 1499, 2499, discount, icon).setVisible(true);
+                CustomerDashboardPage.this.dispose();
+            }
+        });
 
         // Bottom Info & Button
         JPanel bottom = new JPanel();
