@@ -484,11 +484,9 @@ public class WelcomePage extends JFrame {
     }
 
     private void onAdminLoginClicked() {
-         JOptionPane.showMessageDialog(this,
-            "Admin Login / ERP Portal screen can be connected next!",
-            "Admin Access", JOptionPane.INFORMATION_MESSAGE);
+    new AdminLoginPage().setVisible(true);
+    this.dispose();
     }
-
     // ==========================================
     // 6. BUTTONS WITH IKONLI SUPPORT
     // ==========================================
