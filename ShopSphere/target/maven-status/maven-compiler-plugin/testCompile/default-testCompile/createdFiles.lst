@@ -1,0 +1,17 @@
+com\shopsphere\service\CategoryServiceTest.class
+com\shopsphere\service\AdminServiceTest.class
+com\shopsphere\service\OrderServiceTest$StubProductDAO.class
+com\shopsphere\service\CustomerServiceTest$StubUserDAO.class
+com\shopsphere\service\CartServiceTest$StubProductDAO.class
+com\shopsphere\service\OrderServiceTest.class
+com\shopsphere\service\CartServiceTest$StubCartDAO.class
+com\shopsphere\service\ProductServiceTest$StubProductDAO.class
+com\shopsphere\service\AdminServiceTest$StubAdminDAO.class
+com\shopsphere\service\OrderServiceTest$StubCartDAO.class
+com\shopsphere\service\OrderServiceTest$StubOrderDAO.class
+com\shopsphere\service\ProductServiceTest.class
+com\shopsphere\service\CartServiceTest.class
+com\shopsphere\service\CategoryServiceTest$StubCategoryDAO.class
+com\shopsphere\service\CustomerServiceTest.class
+com\shopsphere\view\VerifyUIRenderTest.class
+com\shopsphere\util\DBConnectionTest.class
