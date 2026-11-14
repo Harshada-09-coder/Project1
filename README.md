@@ -158,7 +158,7 @@ mvn test
 Run the configured main Java class through your IDE or Maven Exec Plugin.
 
 ```bash
-mvn exec:java -Dexec.mainClass="YOUR_MAIN_CLASS"
+java -cp "ShopSphere\target\classes;ShopSphere\lib\*" com.shopsphere.view.WelcomePage
 ```
 
 Replace `YOUR_MAIN_CLASS` with the fully qualified name of the application's actual main class.
